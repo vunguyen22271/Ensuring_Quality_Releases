@@ -9,7 +9,7 @@ trigger:
     - main
   paths:
     include:
-    - azure-pipelines.yml
+    - azure-pipelines.yaml
 
 # ToDo: Replace the agent pool name, if you are using Udacity Cloud lab. 
 # Otherwise, comment out the line below. 
