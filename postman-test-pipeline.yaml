@@ -80,7 +80,7 @@ stages:
       inputs:
         testResultsFormat: 'JUnit'
         testResultsFiles: '**/TEST-*.xml'
-        # testResultsFiles: '$(System.DefaultWorkingDirectory)/Results/*.xml'
+        # testResultsFiles: '$(System.DefaultWorkingDirectory)/*.xml'
         searchFolder: 'automatedtesting/postman'
         mergeTestResults: true
         testRunTitle: 'Publish test results'
