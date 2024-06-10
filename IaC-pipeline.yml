@@ -30,7 +30,7 @@ stages:
   pool:
     vmImage: $(vmImageName)
   jobs:
-  - job: BuildJob
+  - job: BuildInfrastructure
     steps:
     - task: TerraformInstaller@1
       displayName: Terraform Install
@@ -41,7 +41,7 @@ stages:
         provider: 'azurerm'
         command: 'init'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        backendServiceArm: 'UdacityDS-51'
+        backendServiceArm: '$(azureServiceConnectionId)'
         backendAzureRmResourceGroupName: 'Azuredevops'
         backendAzureRmStorageAccountName: 'vunguyen22271state'
         backendAzureRmContainerName: 'tfstate'
@@ -51,3 +51,18 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
         provider: 'azurerm'
         command: 'validate'
+    - task: TerraformTaskV4@4
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        commandOptions: '--auto-approve'
+        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+
+    # - task: TerraformTaskV4@4
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'destroy'
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+    #     commandOptions: '--auto-approve'
+    #     environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
