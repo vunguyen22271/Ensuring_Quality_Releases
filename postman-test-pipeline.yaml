@@ -9,7 +9,7 @@ trigger:
     - main
   paths:
     include:
-    - postman-test-pipeline.yml
+    - postman-test-pipeline.yaml
 
 # ToDo: Replace the agent pool name, if you are using Udacity Cloud lab. 
 # Otherwise, comment out the line below. 
