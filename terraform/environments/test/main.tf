@@ -61,7 +61,7 @@ module "vm" {
   subnet_id            = "${module.network.subnet_id_test}"
   vm_admin_username    = "${var.vm_admin_username}"
   public_ip_address_id = "${module.publicip.public_ip_address_id}"
-  packer_image         = "${var.packer_image}"
+  packer_image         = "${var.packer_image18}"
   vm_size              =  "Standard_B1s"
   resource_type        =  "VM"
 }
@@ -80,7 +80,7 @@ module "vm2" {
   subnet_id            = "${module.network.subnet_id_test}"
   vm_admin_username    = "${var.vm_admin_username}"
   public_ip_address_id = "${module.publicip2.public_ip_address_id}"
-  packer_image         = "${var.packer_image}"
+  packer_image         = "${var.packer_image24}"
   vm_size              =  "Standard_B1s"
   resource_type        =  "VM-2"
 }

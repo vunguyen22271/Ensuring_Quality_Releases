@@ -16,4 +16,5 @@ variable address_space {}
 
 # VM
 variable "vm_admin_username" {}
-variable "packer_image" {}
+variable "packer_image18" {}
+variable "packer_image24" {}
