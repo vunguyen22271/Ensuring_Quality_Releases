@@ -40,14 +40,101 @@ stages:
   #   resourceType: VirtualMachine
   #   tags: selenium
   jobs:
-  - job: BuildInfrastructure
+
+    #--------------------------------------------#
+    # Selenium (UI) Test Suite - Archive the package  
+    # "ArchiveFiles@2" picks up the web package and archives it.
+    - task: ArchiveFiles@2
+      displayName: 'Archive UI Tests'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
+        includeRootFolder: false
+        replaceExistingArchive: true
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip'
+    # Selenium Test Suite - Publish the package  
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip   # Same as the archiveFile artifact above. 
+      displayName: 'Upload Package'
+      artifact: drop-uitests
+
+    #--------------------------------------------#  
+    # JMeter (Performance) Test Suite - Archive
+    # ToDo: Complete the ArchiveFiles@2 task and publish step 
+    - task: ArchiveFiles@2
+      displayName: 'Archive PerformanceTestSuite'
+      inputs:
+        rootFolderOrFile: '$(projectRoot)/automatedtesting/jmeter/'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip'
+    # JMeter Test Suite - Publish    
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip
+      displayName: 'Upload Package'
+      artifact: drop-perftests
+# --------------------------------------------#  
+# TEST STAGE
+# --------------------------------------------#
+- stage: Test
+  environment:
+    name:  'test'
+    resourceType: VirtualMachine
+  jobs:
+  - deployment: SeleniumTests
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: Bash@3
+            displayName: Selenium installs
+            inputs:
+              targetType: 'inline'
+              script: |           
+                #!/bin/bash
+
+                sudo apt-get update -y
+                sudo apt-get upgrade -y
+                sudo apt-get install python3-pip -y
+                sudo apt-get install unzip -y
+                sudo apt-get install -y chromium-browser
+                sudo apt-get install -y chromium-chromedriver
+                sudo apt-get install software-properties-common
+                sudo apt-get install -y python-selenium
+                pip3 install selenium
+          - task: Bash@3
+            displayName: Selenium Tests
+            inputs:
+              targetType: 'inline'
+              script: | 
+                #!/bin/bash
+                        
+                cd $(Pipeline.Workspace)/drop-uitests
+                unzip -o $(Build.BuildId)-uitests.zip
+                
+                rm -rf /var/log/selenium
+                sudo mkdir -p /var/log/selenium
+                sudo chmod 777 /var/log/selenium
+                
+                python3 -u login.py 2>&1 | sudo tee -a /var/log/selenium/selenium-test.log
+
+                cd $(System.DefaultWorkingDirectory)
+                
+                rm -rf log/selenium
+                mkdir -p log/selenium
+            
+                sudo cp /var/log/selenium/selenium-test.log log/selenium/selenium-test.log
+          - task: PublishPipelineArtifact@1
+            displayName: Publish Selenium Logs
+            inputs:
+              targetPath: '$(System.DefaultWorkingDirectory)/log/selenium/selenium-test.log'
+              artifactName: 'drop-selenium-logs'
+  - job: PostmanTests
     steps:
     #--------------------------------------------#
     # Postman - Install Newman
-    - task: NodeTool@0
-      displayName: Install Node v16.X
-      inputs:
-        versionSpec: '16.x'
+    # - task: NodeTool@0
+    #   displayName: Install Node v16.X
+    #   inputs:
+    #     versionSpec: '16.x'
 
     # ToDo: Update the command and verify the working directory
     - task: CmdLine@2
@@ -96,88 +183,3 @@ stages:
         searchFolder: 'automatedtesting/postman'
         mergeTestResults: true
         testRunTitle: 'Publish test results'
-
-    #--------------------------------------------#
-    # Selenium (UI) Test Suite - Archive the package  
-    # "ArchiveFiles@2" picks up the web package and archives it.
-    - task: ArchiveFiles@2
-      displayName: 'Archive UI Tests'
-      inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
-        includeRootFolder: false
-        replaceExistingArchive: true
-        archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip'
-    # Selenium Test Suite - Publish the package  
-    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip   # Same as the archiveFile artifact above. 
-      displayName: 'Upload Package'
-      artifact: drop-uitests
-
-    #--------------------------------------------#  
-    # JMeter (Performance) Test Suite - Archive
-    # ToDo: Complete the ArchiveFiles@2 task and publish step 
-    - task: ArchiveFiles@2
-      displayName: 'Archive PerformanceTestSuite'
-      inputs:
-        rootFolderOrFile: '$(projectRoot)/automatedtesting/jmeter/'
-        includeRootFolder: false
-        archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip'
-    # JMeter Test Suite - Publish    
-    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip
-      displayName: 'Upload Package'
-      artifact: drop-perftests
-
-- stage: SeleniumTests
-  jobs:
-    - deployment: SeleniumTests
-      environment:
-        name:  'test'
-        resourceType: VirtualMachine
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - task: Bash@3
-              displayName: Selenium installs
-              inputs:
-                targetType: 'inline'
-                script: |           
-                  #!/bin/bash
-
-                  sudo apt-get update -y
-                  sudo apt-get upgrade -y
-                  sudo apt-get install python3-pip -y
-                  sudo apt-get install unzip -y
-                  sudo apt-get install -y chromium-browser
-                  sudo apt-get install -y chromium-chromedriver
-                  sudo apt-get install software-properties-common
-                  sudo apt-get install -y python-selenium
-                  pip3 install selenium
-            - task: Bash@3
-              displayName: Selenium Tests
-              inputs:
-                targetType: 'inline'
-                script: | 
-                  #!/bin/bash
-                          
-                  cd $(Pipeline.Workspace)/drop-uitests
-                  unzip -o $(Build.BuildId)-uitests.zip
-                  
-                  rm -rf /var/log/selenium
-                  sudo mkdir -p /var/log/selenium
-                  sudo chmod 777 /var/log/selenium
-                  
-                  python3 -u login.py 2>&1 | sudo tee -a /var/log/selenium/selenium-test.log
-
-                  cd $(System.DefaultWorkingDirectory)
-                  
-                  rm -rf log/selenium
-                  mkdir -p log/selenium
-              
-                  sudo cp /var/log/selenium/selenium-test.log log/selenium/selenium-test.log
-            - task: PublishPipelineArtifact@1
-              displayName: Publish Selenium Logs
-              inputs:
-                targetPath: '$(System.DefaultWorkingDirectory)/log/selenium/selenium-test.log'
-                artifactName: 'drop-selenium-logs'
