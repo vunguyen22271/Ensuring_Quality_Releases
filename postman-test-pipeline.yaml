@@ -76,11 +76,11 @@ stages:
 # TEST STAGE
 # --------------------------------------------#
 - stage: SeleniumTests
-  environment:
-    name:  'test'
-    resourceType: VirtualMachine
   jobs:
   - deployment: SeleniumTests
+    environment:
+      name:  'test'
+      resourceType: VirtualMachine
     strategy:
       runOnce:
         deploy:
@@ -130,11 +130,11 @@ stages:
               artifactName: 'drop-selenium-logs'
 
 - stage: PostmanTests
-  environment:
-    name:  'test'
-    resourceType: VirtualMachine
   jobs:
   - job: PostmanTests
+    environment:
+      name:  'test'
+      resourceType: VirtualMachine
     steps:
     #--------------------------------------------#
     # Postman - Install Newman
