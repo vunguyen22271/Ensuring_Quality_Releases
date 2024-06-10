@@ -78,7 +78,7 @@ stages:
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
 
     # Run Terraform Apply
-     - task: TerraformTaskV4@4
+    - task: TerraformTaskV4@4
       displayName: Terraform Apply
       name: terraformApply
       condition: eq(variables['terraformPlan.changesPresent'], 'true')
