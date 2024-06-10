@@ -1,0 +1,85 @@
+name: Azure Pipelines
+
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - postman-test-pipeline.yml
+
+# ToDo: Replace the agent pool name, if you are using Udacity Cloud lab. 
+# Otherwise, comment out the line below. 
+pool: myAgentPool
+
+variables:
+  python.version: '3.7.6'
+  # ToDo: Replace the service connection name as used in the DevOps project settings
+  azureServiceConnectionId: 'UdacityDS-51'
+  # Project root folder. Point to the folder containing manage.py file.
+  projectRoot: $(System.DefaultWorkingDirectory)
+  # Environment name
+  environmentName: 'test'
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+stages:
+#--------------------------------------------#  
+# BUILD STAGE
+#--------------------------------------------#    
+- stage: Build
+  displayName: Build
+  # pool:
+  #   vmImage: $(vmImageName)
+  environment:
+    name: test
+    resourceType: VirtualMachine
+    tags: selenium
+  jobs:
+  - job: BuildInfrastructure
+    steps:
+    #--------------------------------------------#
+    # Postman - Install Newman
+    - task: NodeTool@0
+      displayName: Install Node v16.X
+      inputs:
+        versionSpec: '16.x'
+
+    # ToDo: Update the command and verify the working directory
+    - task: CmdLine@2
+      displayName: Install Newman
+      inputs:
+        script: 'sudo npm install -g newman'
+        workingDirectory: $(System.DefaultWorkingDirectory)
+
+    # Postman Data Validation Test Suite    
+    # ToDo: Verify the working directory
+    - task: CmdLine@2
+      displayName: Run Data Validation Tests
+      continueOnError: true
+      inputs:
+        script: 'newman run TestSuite.Data-Validation.json -e Test.environment.json --reporters cli,junit --reporter-junit-export TEST-DataValidation.xml'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+
+    # Postman Regression Test Suite
+    # ToDo: Verify the working directory
+    - task: CmdLine@2
+      displayName: Run Regression Tests
+      continueOnError: true
+      inputs:
+        script: 'newman run TestSuite.Regression.json -e Test.environment2.json --reporters cli,junit --reporter-junit-export TEST-Regression.xml'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+
+    # Postman - Publish Results 
+    # ToDo: Complete the task as explained here: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/test/publish-test-results?view=azure-devops&tabs=trx%2Cyaml#yaml-snippet
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/TEST-*.xml'
+        # testResultsFiles: '$(System.DefaultWorkingDirectory)/Results/*.xml'
+        searchFolder: 'automatedtesting/postman'
+        mergeTestResults: true
+        testRunTitle: 'Publish test results'
