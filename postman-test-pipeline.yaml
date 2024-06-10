@@ -1,4 +1,4 @@
-name: Azure Pipelines
+name: Postman Pipelines
 
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
@@ -33,8 +33,8 @@ stages:
 - stage: Build
   displayName: Build
   pool:
-    name: Default
-  #   vmImage: $(vmImageName)
+    # name: Default
+    vmImage: $(vmImageName)
   # environment:
   #   name: test
   #   resourceType: VirtualMachine
@@ -84,3 +84,18 @@ stages:
         searchFolder: 'automatedtesting/postman'
         mergeTestResults: true
         testRunTitle: 'Publish test results'
+
+    #--------------------------------------------#
+    # Selenium (UI) Test Suite - Archive the package  
+    # "ArchiveFiles@2" picks up the web package and archives it.
+    - task: ArchiveFiles@2
+      displayName: 'Archive UI Tests'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip'
+    # Selenium Test Suite - Publish the package  
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip   # Same as the archiveFile artifact above. 
+      displayName: 'Upload Package'
+      artifact: drop-uitests
