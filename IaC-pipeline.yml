@@ -33,11 +33,11 @@ stages:
   - job: BuildInfrastructure
     steps:
     - task: TerraformInstaller@1
-      displayName: Terraform Install
+      displayName: Terraform_Install
       inputs:
         terraformVersion: '1.7.1'
     - task: TerraformTaskV4@4
-      name: Terraform Init
+      name: Terraform_Init
       inputs:
         provider: 'azurerm'
         command: 'init'
@@ -48,13 +48,13 @@ stages:
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'test.terraform.tfstate'
     - task: TerraformTaskV4@4
-      name: Terraform Validate
+      name: Terraform_Validate
       inputs:
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
         provider: 'azurerm'
         command: 'validate'
     - task: TerraformTaskV4@4
-      name: Terraform Plan
+      name: Terraform_Plan
       displayName: Create Terraform Plan
       inputs:
         provider: 'azurerm'
@@ -63,7 +63,7 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
     - task: TerraformTaskV4@4
-      name: Terraform Apply
+      name: Terraform_Apply
       condition: eq(variables['terraformPlan.changesPresent'], 'true')
       inputs:
         provider: 'azurerm'
