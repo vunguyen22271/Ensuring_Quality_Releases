@@ -33,7 +33,7 @@ stages:
 - stage: Build
   displayName: Build
   pool:
-    name: vupc-pool
+    name: Default
   #   vmImage: $(vmImageName)
   # environment:
   #   name: test
