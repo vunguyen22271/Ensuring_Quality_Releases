@@ -155,3 +155,4 @@ stages:
               appName: 'vunguyen22271-AppService'
               appType: webApp
               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+              deploymentMethod: 'auto'
