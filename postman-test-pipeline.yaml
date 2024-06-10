@@ -132,16 +132,15 @@ stages:
 - stage: PostmanTests
   jobs:
   - job: PostmanTests
-    environment:
-      name:  'test'
-      resourceType: VirtualMachine
+    pool:
+      vmImage: $(vmImageName)
     steps:
     #--------------------------------------------#
     # Postman - Install Newman
-    # - task: NodeTool@0
-    #   displayName: Install Node v16.X
-    #   inputs:
-    #     versionSpec: '16.x'
+    - task: NodeTool@0
+      displayName: Install Node v16.X
+      inputs:
+        versionSpec: '16.x'
 
     # ToDo: Update the command and verify the working directory
     - task: CmdLine@2
