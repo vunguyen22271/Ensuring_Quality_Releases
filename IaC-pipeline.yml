@@ -13,7 +13,7 @@ pool:
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureServiceConnectionId: 'UdacityDS-70'
+  azureServiceConnectionId: 'UdacityDS-51'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -36,3 +36,18 @@ stages:
       displayName: Terraform Install
       inputs:
         terraformVersion: '1.7.1'
+    - task: TerraformTaskV4@4
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        backendServiceArm: 'UdacityDS-51'
+        backendAzureRmResourceGroupName: 'Azuredevops'
+        backendAzureRmStorageAccountName: 'vunguyen22271state'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'test.terraform.tfstate'
+    - task: TerraformTaskV4@4
+      inputs:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        provider: 'azurerm'
+        command: 'validate'
