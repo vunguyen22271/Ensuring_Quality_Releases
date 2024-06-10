@@ -56,7 +56,7 @@ stages:
         provider: 'azurerm'
         command: 'apply'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        commandOptions: '--auto-approve'
+        # commandOptions: '--auto-approve'
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
 
     # - task: TerraformTaskV4@4
