@@ -202,21 +202,21 @@ stages:
     - task: Bash@3
       displayName: stressTest
       inputs:
-      targetType: 'inline'
-      script: |
-        jmeter -n -t automatedtesting/jmeter/stressTest.jmx \
-            -l log/jmeter/stress_test_result.csv \
-            -e -f -o log/jmeter/stress_test_html_report \
-            -j log/jmeter/jmeter_stress_test.log
+        targetType: 'inline'
+        script: |
+          jmeter -n -t automatedtesting/jmeter/stressTest.jmx \
+              -l log/jmeter/stress_test_result.csv \
+              -e -f -o log/jmeter/stress_test_html_report \
+              -j log/jmeter/jmeter_stress_test.log
     - task: Bash@3
       displayName: enduranceTest
       inputs:
-      targetType: 'inline'
-      script: |
-        jmeter -n -t automatedtesting/jmeter/enduranceTest.jmx \
-            -l log/jmeter/endurance_test_result.csv \
-            -e -f -o log/jmeter/endurance_test_html_report \
-            -j log/jmeter/jmeter_endurance_test.log
+        targetType: 'inline'
+        script: |
+          jmeter -n -t automatedtesting/jmeter/enduranceTest.jmx \
+              -l log/jmeter/endurance_test_result.csv \
+              -e -f -o log/jmeter/endurance_test_html_report \
+              -j log/jmeter/jmeter_endurance_test.log
     - task: ArchiveFiles@2
       displayName: Save JMeter Stress Test Report to Artifact
       inputs:
