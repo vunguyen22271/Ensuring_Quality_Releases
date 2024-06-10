@@ -1,0 +1,61 @@
+name: IaC pipeline
+
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  # Azure Resource Manager connection created during pipeline creation
+  azureServiceConnectionId: 'UdacityDS-51'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+  # Project root folder. Point to the folder containing manage.py file.
+  projectRoot: $(System.DefaultWorkingDirectory)
+
+  # Python version: 3.8
+  pythonVersion: '3.8'
+
+stages:
+- stage: iac
+  displayName: Apply IaC
+  pool:
+    vmImage: $(vmImageName)
+  jobs:
+  - job: BuildInfrastructure
+    steps:
+    - task: TerraformInstaller@1
+      displayName: Terraform Install
+      inputs:
+        terraformVersion: '1.7.1'
+    - task: TerraformTaskV4@4
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        backendServiceArm: '$(azureServiceConnectionId)'
+        backendAzureRmResourceGroupName: 'Azuredevops'
+        backendAzureRmStorageAccountName: 'vunguyen22271state'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'test.terraform.tfstate'
+    - task: TerraformTaskV4@4
+      inputs:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        provider: 'azurerm'
+        command: 'validate'
+    # - task: TerraformTaskV4@4
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'apply'
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+    #     commandOptions: '--auto-approve'
+    #     environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+    - task: TerraformTaskV4@4
+      inputs:
+        provider: 'azurerm'
+        command: 'destroy'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        commandOptions: '--auto-approve'
+        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
