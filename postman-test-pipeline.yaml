@@ -75,7 +75,7 @@ stages:
 # --------------------------------------------#  
 # TEST STAGE
 # --------------------------------------------#
-- stage: Test
+- stage: SeleniumTests
   environment:
     name:  'test'
     resourceType: VirtualMachine
@@ -128,6 +128,12 @@ stages:
             inputs:
               targetPath: '$(System.DefaultWorkingDirectory)/log/selenium/selenium-test.log'
               artifactName: 'drop-selenium-logs'
+
+- stage: PostmanTests
+  environment:
+    name:  'test'
+    resourceType: VirtualMachine
+  jobs:
   - job: PostmanTests
     steps:
     #--------------------------------------------#
