@@ -28,9 +28,12 @@ stages:
     steps:
     - task: TerraformInstaller@1
       displayName: Terraform Install
+      name: terraformInstaller
       inputs:
         terraformVersion: '1.7.1'
     - task: TerraformTaskV4@4
+      displayName: Terraform Init
+      name: terraformInit
       inputs:
         provider: 'azurerm'
         command: 'init'
@@ -41,21 +44,10 @@ stages:
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'test.terraform.tfstate'
     - task: TerraformTaskV4@4
-      inputs:
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        provider: 'azurerm'
-        command: 'validate'
-    # - task: TerraformTaskV4@4
-    #   inputs:
-    #     provider: 'azurerm'
-    #     command: 'apply'
-    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-    #     commandOptions: '--auto-approve'
-    #     environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
-    - task: TerraformTaskV4@4
+      displayName: Terraform Destroy
+      name: terraformDestroy
       inputs:
         provider: 'azurerm'
         command: 'destroy'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        commandOptions: '--auto-approve'
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
