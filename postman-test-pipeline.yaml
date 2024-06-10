@@ -132,7 +132,7 @@ stages:
   jobs:
     - deployment: SeleniumTests
       environment:
-        name:  'vunguyen22271-VM-18'
+        name:  'test'
         resourceType: VirtualMachine
       strategy:
         runOnce:
