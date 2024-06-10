@@ -7,6 +7,7 @@ trigger:
   paths:
     include:
     - IaC-pipeline.yml
+    - terraform/**
 
 pool:
   vmImage: ubuntu-latest

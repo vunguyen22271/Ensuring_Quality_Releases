@@ -72,7 +72,7 @@ module "publicip2" {
   resource_type    = "publicip"
   resource_group   = "${module.resource_group.resource_group_name}"
 }
-module "vm" {
+module "vm2" {
   source               = "../../modules/vm"
   location             = "${var.location}"
   resource_group       = "${module.resource_group.resource_group_name}"
