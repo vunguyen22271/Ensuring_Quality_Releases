@@ -32,12 +32,13 @@ stages:
 #--------------------------------------------#    
 - stage: Build
   displayName: Build
-  # pool:
+  pool:
+    name: vupc-pool
   #   vmImage: $(vmImageName)
-  environment:
-    name: test
-    resourceType: VirtualMachine
-    tags: selenium
+  # environment:
+  #   name: test
+  #   resourceType: VirtualMachine
+  #   tags: selenium
   jobs:
   - job: BuildInfrastructure
     steps:
