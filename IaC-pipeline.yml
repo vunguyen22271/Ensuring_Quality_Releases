@@ -37,6 +37,7 @@ stages:
       inputs:
         terraformVersion: '1.7.1'
     - task: TerraformTaskV4@4
+      name: Terraform Init
       inputs:
         provider: 'azurerm'
         command: 'init'
@@ -47,16 +48,28 @@ stages:
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'test.terraform.tfstate'
     - task: TerraformTaskV4@4
+      name: Terraform Validate
       inputs:
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
         provider: 'azurerm'
         command: 'validate'
     - task: TerraformTaskV4@4
+      name: Terraform Plan
+      displayName: Create Terraform Plan
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        commandOptions: '-out main.tfplan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+    - task: TerraformTaskV4@4
+      name: Terraform Apply
+      condition: eq(variables['terraformPlan.changesPresent'], 'true')
       inputs:
         provider: 'azurerm'
         command: 'apply'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        # commandOptions: '--auto-approve'
+        commandOptions: 'main.tfplan --auto-approve'
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
 
     # - task: TerraformTaskV4@4
