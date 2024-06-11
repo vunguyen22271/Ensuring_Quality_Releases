@@ -46,15 +46,15 @@ stages:
               targetType: 'inline'
               script: |
                 echo "hello world"
-          - task: NodeTool@0
-            displayName: Install Node.js v16.20.2
-            inputs:
-              versionSpec: '16.20.2'
+                curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+                sudo apt-get install -y nodejs=16.20.2-1nodesource1
+          # - task: NodeTool@0
+          #   displayName: Install Node.js v16.20.2
+          #   inputs:
+          #     versionSpec: '16.20.2'
           
           - task: Bash@2
             displayName: Install Newman
             inputs:
               script: |
-                #! /bin/bash
-                
                 npm install -g newman
