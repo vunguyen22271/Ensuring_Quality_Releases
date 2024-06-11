@@ -53,8 +53,8 @@ stages:
           #   inputs:
           #     versionSpec: '16.20.2'
           
-          - task: Bash@2
+          - task: CmdLine@2
             displayName: Install Newman
             inputs:
-              script: |
-                npm install -g newman
+              script: 'sudo npm install -g newman'
+              workingDirectory: $(System.DefaultWorkingDirectory)
