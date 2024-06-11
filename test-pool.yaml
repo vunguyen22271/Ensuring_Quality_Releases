@@ -55,4 +55,6 @@ stages:
             displayName: Install Newman
             inputs:
               script: |
+                #! /bin/bash
+                
                 npm install -g newman
