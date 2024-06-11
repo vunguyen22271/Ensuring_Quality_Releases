@@ -17,8 +17,8 @@ resource "azurerm_windows_web_app" "test" {
     "WEBSITE_ENABLE_SYNC_UPDATE_SITE" = true
   }
   logs {
-    detailed_error_messages = false
-    failed_request_tracing  = false
+    detailed_error_messages = true
+    failed_request_tracing  = true
 
     application_logs {
       file_system_level = "Error"
