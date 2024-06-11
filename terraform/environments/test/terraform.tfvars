@@ -16,5 +16,5 @@ address_prefix_test = "10.5.1.0/24"
 
 # VM
 vm_admin_username = "adminuser"
-packer_image18 = "/subscriptions/99c360d5-5a1d-45b7-93ae-80a16feaccb7/resourceGroups/Azuredevops/providers/Microsoft.Compute/images/myPackerImage18"
-packer_image24 = "/subscriptions/99c360d5-5a1d-45b7-93ae-80a16feaccb7/resourceGroups/Azuredevops/providers/Microsoft.Compute/images/myPackerImage24"
+packer_image18 = "/subscriptions/a4b11da3-2642-4ae2-b8e0-ba40545a13d6/resourceGroups/Azuredevops/providers/Microsoft.Compute/images/myPackerImage18"
+packer_image24 = "/subscriptions/a4b11da3-2642-4ae2-b8e0-ba40545a13d6/resourceGroups/Azuredevops/providers/Microsoft.Compute/images/myPackerImage24"
