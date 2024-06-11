@@ -9,7 +9,7 @@ trigger:
     - main
   paths:
     include:
-    - azure-pipelines.yaml
+    - test-pool.yaml
 
 # ToDo: Replace the agent pool name, if you are using Udacity Cloud lab. 
 # Otherwise, comment out the line below. 
@@ -29,9 +29,9 @@ variables:
   agentPoolName: 'Default'
 
 stages:
-- stage: Pool Tests
+- stage: Pool_Tests
   jobs:
-  - deployment: Pool Tests
+  - deployment: Pool_Tests
     environment:
       name:  'test'
       resourceType: VirtualMachine
