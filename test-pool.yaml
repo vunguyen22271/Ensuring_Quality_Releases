@@ -40,21 +40,28 @@ stages:
       runOnce:
         deploy:
           steps:
+          # - task: Bash@3
+          #   displayName: Pool
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: |
+          #       echo "hello world"
+          #       curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+          #       sudo apt-get install -y nodejs=16.20.2-1nodesource1
+          
+          # - task: CmdLine@2
+          #   displayName: Install Newman
+          #   inputs:
+          #     script: 'sudo npm install -g newman'
+          #     workingDirectory: $(System.DefaultWorkingDirectory)
           - task: Bash@3
-            displayName: Pool
+            displayName: Install Java 8
             inputs:
               targetType: 'inline'
               script: |
-                echo "hello world"
-                curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-                sudo apt-get install -y nodejs=16.20.2-1nodesource1
-          # - task: NodeTool@0
-          #   displayName: Install Node.js v16.20.2
-          #   inputs:
-          #     versionSpec: '16.20.2'
-          
-          - task: CmdLine@2
-            displayName: Install Newman
+                sudo apt-get update
+                sudo apt-get install openjdk-8-jdk -y
+                export HEAP="-Xms1g -Xmx1g"
+          - task: JMeterInstaller@0
             inputs:
-              script: 'sudo npm install -g newman'
-              workingDirectory: $(System.DefaultWorkingDirectory)
+              jmeterVersion: '5.6.3'
