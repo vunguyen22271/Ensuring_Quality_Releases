@@ -1,0 +1,8 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1718122286744,4700,Get Books,200,OK,Stress Test 1-5,text,true,,915387,153,5,5,https://vunguyen22271-appservice.azurewebsites.net/api/Books,3194,0,957
+1718122286744,4746,Get Books,200,OK,Stress Test 1-1,text,true,,918522,153,5,5,https://vunguyen22271-appservice.azurewebsites.net/api/Books,3158,0,957
+1718122286744,4918,Get Books,200,OK,Stress Test 1-2,text,true,,900225,153,5,5,https://vunguyen22271-appservice.azurewebsites.net/api/Books,3109,0,957
+1718122286744,4956,Get Books,200,OK,Stress Test 1-4,text,true,,902145,153,4,4,https://vunguyen22271-appservice.azurewebsites.net/api/Books,3179,0,957
+1718122291447,300,Post Books,200,OK,Stress Test 1-5,text,true,,262,237,3,3,https://vunguyen22271-appservice.azurewebsites.net/api/Books,300,0,0
+1718122291491,264,Post Books,200,OK,Stress Test 1-1,text,true,,262,237,2,2,https://vunguyen22271-appservice.azurewebsites.net/api/Books,264,0,0
+1718122286744,5045,Get Books,200,OK,Stress Test 1-3,text,true,,897510,153,1,1,https://vunguyen22271-appservice.azurewebsites.net/api/Books,3181,0,957
