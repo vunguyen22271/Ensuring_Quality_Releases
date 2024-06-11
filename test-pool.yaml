@@ -72,6 +72,14 @@ stages:
     pool: $(agentPoolName)
     steps:
     - task: Bash@3
+      displayName: enduranceTest
+      inputs:
+        targetType: 'inline'
+        script: |
+          ls -lah
+          cd $(System.DefaultWorkingDirectory)
+          ls -lah
+    - task: Bash@3
       displayName: Install Java 8
       inputs:
         targetType: 'inline'
