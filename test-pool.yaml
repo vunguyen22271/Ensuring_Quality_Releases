@@ -54,6 +54,5 @@ stages:
           - task: Bash@2
             displayName: Install Newman
             inputs:
-              workingDirectory: '$(System.DefaultWorkingDirectory)'
               script: |
                 npm install -g newman
