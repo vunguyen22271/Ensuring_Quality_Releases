@@ -32,10 +32,10 @@ stages:
 - stage: Pool_Tests
   jobs:
   - deployment: Pool_Tests
-    environment:
-      name:  'test'
-      resourceType: VirtualMachine
-    # pool: $(agentPoolName)
+    # environment:
+    #   name:  'test'
+    #   resourceType: VirtualMachine
+    pool: $(agentPoolName)
     strategy:
       runOnce:
         deploy:
