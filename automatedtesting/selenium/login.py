@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.relative_locator import with_tag_name
+# from selenium.webdriver.support.relative_locator import with_tag_name
 
 login_url = 'https://www.saucedemo.com/'
 inventory_url = 'https://www.saucedemo.com/inventory.html'
@@ -12,7 +12,7 @@ cart_url = 'https://www.saucedemo.com/cart.html'
 def create_driver():
     print ('Starting the browser...')
     options = ChromeOptions()
-    # options.add_argument("--headless")
+    options.add_argument("--headless")
     return webdriver.Chrome(options=options)
 
 # Start the browser and login with standard_user

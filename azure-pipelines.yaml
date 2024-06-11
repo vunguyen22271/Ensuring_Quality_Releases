@@ -197,7 +197,7 @@ stages:
                 sudo apt-get install -y chromium-chromedriver
                 sudo apt-get install software-properties-common
                 sudo apt-get install -y python-selenium
-                pip3 install selenium
+                pip3 install selenium==4.0.0a1
           - task: Bash@3
             displayName: Selenium Tests
             inputs:
