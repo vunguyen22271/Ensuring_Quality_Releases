@@ -34,9 +34,7 @@ stages:
   - deployment: Pool_Tests
     environment:
       name:  'test'
-      # resourceType: VirtualMachine
-    # pool: 
-    #   vmImage: $(vmImageName)
+      resourceType: VirtualMachine
     pool: $(agentPoolName)
     strategy:
       runOnce:
