@@ -62,7 +62,7 @@ module "vm" {
   vm_admin_username    = "${var.vm_admin_username}"
   public_ip_address_id = "${module.publicip.public_ip_address_id}"
   packer_image         = "${var.packer_image18}"
-  vm_size              =  "Standard_B1s"
+  vm_size              =  "Standard_B2ms"
   resource_type        =  "VM"
 }
 # module "publicip2" {
@@ -81,6 +81,6 @@ module "vm" {
 #   vm_admin_username    = "${var.vm_admin_username}"
 #   public_ip_address_id = "${module.publicip2.public_ip_address_id}"
 #   packer_image         = "${var.packer_image24}"
-#   vm_size              =  "Standard_B1s"
+#   vm_size              =  "Standard_B2ms"
 #   resource_type        =  "VM-2"
 # }

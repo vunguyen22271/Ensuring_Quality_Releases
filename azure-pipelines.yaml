@@ -301,6 +301,13 @@ stages:
   - job: JmeterTests
     pool: $(agentPoolName)
     steps:
+    - task: Bash@3
+      displayName: Install Java 8
+      inputs:
+        targetType: 'inline'
+        script: |
+          sudo apt-get update
+          sudo apt-get install openjdk-8-jdk -y
     - task: JMeterInstaller@0
       inputs:
         jmeterVersion: '5.6.3'
