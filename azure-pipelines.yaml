@@ -25,6 +25,8 @@ variables:
   environmentName: 'test'
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
+  # Agemt pool name
+  agentPoolName: 'Default'
 
 stages:
 #--------------------------------------------#  
@@ -150,10 +152,9 @@ stages:
   # Deploy FakeRestAPI Web App
   # ToDo: Provide <environment name> you created in your DevOps project
   - deployment: FakeRestAPI
-    pool:
-      vmImage: 'ubuntu-22.04'
-      # name: Default
-    environment: $(environmentName)
+    environment:
+      name: $(environmentName)
+      resourceType: VirtualMachine
     strategy:
       runOnce:
         deploy:
@@ -174,7 +175,7 @@ stages:
   jobs:
   - deployment: SeleniumTests
     environment:
-      name:  'test'
+      name: $(environmentName)
       resourceType: VirtualMachine
     strategy:
       runOnce:
@@ -227,8 +228,7 @@ stages:
 - stage: PostmanTests
   jobs:
   - job: PostmanTests
-    pool:
-      vmImage: $(vmImageName)
+    pool: $(agentPoolName)
     steps:
     #--------------------------------------------#
     # Postman - Install Newman
@@ -288,8 +288,7 @@ stages:
 - stage: JmeterTests
   jobs:
   - job: JmeterTests
-    pool:
-      vmImage: $(vmImageName)
+    pool: $(agentPoolName)
     steps:
     - task: JMeterInstaller@0
       inputs:
