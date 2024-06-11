@@ -16,7 +16,7 @@
 		"image_offer": "ubuntu-24_04-lts",
 		"image_sku": "server",
 		"managed_image_resource_group_name": "Azuredevops",
-		"managed_image_name": "myPackerImage",
+		"managed_image_name": "myPackerImage24",
 		"location": "eastus",
 		"vm_size": "Standard_B1s",
 		"ssh_username": "packer",

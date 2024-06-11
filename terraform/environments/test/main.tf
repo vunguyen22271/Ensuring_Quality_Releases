@@ -65,22 +65,22 @@ module "vm" {
   vm_size              =  "Standard_B1s"
   resource_type        =  "VM"
 }
-module "publicip2" {
-  source           = "../../modules/publicip"
-  location         = "${var.location}"
-  application_type = "${var.application_type}-2"
-  resource_type    = "publicip"
-  resource_group   = "${module.resource_group.resource_group_name}"
-}
-module "vm2" {
-  source               = "../../modules/vm"
-  location             = "${var.location}"
-  resource_group       = "${module.resource_group.resource_group_name}"
-  application_type     = "${var.application_type}"
-  subnet_id            = "${module.network.subnet_id_test}"
-  vm_admin_username    = "${var.vm_admin_username}"
-  public_ip_address_id = "${module.publicip2.public_ip_address_id}"
-  packer_image         = "${var.packer_image24}"
-  vm_size              =  "Standard_B1s"
-  resource_type        =  "VM-2"
-}
+# module "publicip2" {
+#   source           = "../../modules/publicip"
+#   location         = "${var.location}"
+#   application_type = "${var.application_type}-2"
+#   resource_type    = "publicip"
+#   resource_group   = "${module.resource_group.resource_group_name}"
+# }
+# module "vm2" {
+#   source               = "../../modules/vm"
+#   location             = "${var.location}"
+#   resource_group       = "${module.resource_group.resource_group_name}"
+#   application_type     = "${var.application_type}"
+#   subnet_id            = "${module.network.subnet_id_test}"
+#   vm_admin_username    = "${var.vm_admin_username}"
+#   public_ip_address_id = "${module.publicip2.public_ip_address_id}"
+#   packer_image         = "${var.packer_image24}"
+#   vm_size              =  "Standard_B1s"
+#   resource_type        =  "VM-2"
+# }
