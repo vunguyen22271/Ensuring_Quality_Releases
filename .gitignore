@@ -5,7 +5,7 @@
 **/.terraform/*
 terraform/**/.terraform/*
 **/.terraform.lock.hcl
-
+log/jmeter/**
 # .tfstate files
 *.tfstate
 *.tfstate.*
