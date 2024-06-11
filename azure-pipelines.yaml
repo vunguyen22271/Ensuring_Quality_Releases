@@ -233,10 +233,20 @@ stages:
     steps:
     #--------------------------------------------#
     # Postman - Install Newman
-    - task: NodeTool@0
-      displayName: Install Node v16.X
+    # - task: NodeTool@0
+    #   displayName: Install Node v16.X
+    #   inputs:
+    #     versionSpec: '16.x'
+
+
+    - task: Bash@3
+      displayName: Install Node v16.20.2
       inputs:
-        versionSpec: '16.x'
+        targetType: 'inline'
+        script: |
+          echo "hello world"
+          sudo curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+          sudo apt-get install -y nodejs=16.20.2-1nodesource1
 
     # ToDo: Update the command and verify the working directory
     - task: CmdLine@2
