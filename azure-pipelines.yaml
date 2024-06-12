@@ -204,11 +204,13 @@ stages:
               targetType: 'inline'
               script: | 
                 #!/bin/bash
+                # https://www.youtube.com/watch?v=8Vl1BIGXHV0
+                # https://knowledge.udacity.com/questions/1018764
                         
                 cd $(Pipeline.Workspace)/drop-uitests
                 unzip -o $(Build.BuildId)-uitests.zip
                 
-                rm -rf /var/log/selenium
+                sudo rm -rf /var/log/selenium
                 sudo mkdir -p /var/log/selenium
                 sudo chmod 777 /var/log/selenium
                 
